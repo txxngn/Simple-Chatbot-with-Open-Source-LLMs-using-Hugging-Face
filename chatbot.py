@@ -14,6 +14,10 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 #So use list to store the conversation history
 conversation_history = []
 
+
+"""
+
+
 #I will pass my history chat to the model ALONG with my input
 #each element separated by the newline character '\n'
 history_string = "\n".join(conversation_history)
@@ -60,7 +64,37 @@ print(conversation_history)
 #-> ['hello, how are you doing?', "I'm doing well. I am doing very well. How are you? Do you have any hobbies?"]
 
 
+"""
 
+
+
+
+
+
+
+#LOOP
+#Put everything in a loop and run a whole conversation!
+while True:
+    # Create conversation history string
+    history_string = "\n".join(conversation_history)
+
+    # Get the input data from the user
+    input_text = input("> ")
+
+    # Tokenize the input text and history
+    inputs = tokenizer.encode_plus(history_string, input_text, return_tensors="pt")
+
+    # Generate the response from the model
+    outputs = model.generate(**inputs)
+
+    # Decode the response
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+    
+    print(response)
+
+    # Add interaction to conversation history
+    conversation_history.append(input_text)
+    conversation_history.append(response)
 
 
 
